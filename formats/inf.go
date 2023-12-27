@@ -1,6 +1,7 @@
 package formats
 
 import (
+	"EOB1MazeViewer/formats/inf"
 	"bytes"
 	"encoding/binary"
 	"fmt"
@@ -122,6 +123,11 @@ func buildInfHeader(cps *CPS, err error) (*InfHeader, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	triggers, err := inf.LoadTriggers(buffer, internalInfHeader.TriggerOffset)
+	fmt.Printf("%d", len(*triggers))
+
+	inf.ParseScripts(buffer, triggers, internalInfHeader.TriggerOffset)
 
 	result := InfHeader{
 		TriggersOffset:                     internalInfHeader.TriggerOffset,
